@@ -94,7 +94,7 @@
       thisProduct.formInputs = thisProduct.form.querySelectorAll(select.all.formInputs);
       thisProduct.cartButton = thisProduct.element.querySelector(select.menuProduct.cartButton);
       thisProduct.priceElem = thisProduct.element.querySelector(select.menuProduct.priceElem);
-      console.log(thisProduct);
+
     }
 
 
@@ -102,7 +102,7 @@
 
     initAccordion() {
       const thisProduct = this;
-      console.log(thisProduct);
+
 
       /* find the clickable trigger (the element that should react to clicking) */
       const clickableTrigger = thisProduct.accordionTrigger;
@@ -120,7 +120,7 @@
 
         /* find all active products */
         const activeProducts = document.querySelectorAll('.product, .active');
-
+        // console.log(activeProducts);
         /* START LOOP: for each active product */
         for (let activeProduct of activeProducts) {
 
@@ -140,7 +140,7 @@
 
     initOrderForm(){
       const thisProduct = this;
-      console.log(thisProduct);
+      console.log('initOrderForm');
       thisProduct.form.addEventListener('submit', function(event){
         event.preventDefault();
         thisProduct.processOrder();
@@ -158,11 +158,59 @@
       });
     }
 
-    processOrder(){
+    processOrder() {
       const thisProduct = this;
-      console.log(thisProduct);
+      console.log('processOrder');
+
+      const formData = utils.serializeFormToObject(thisProduct.form);
+      console.log('formData', formData);
+
+      let price = thisProduct.data.price;
+      console.log(price);
+
+      /* START LOOP: for each paramId in thisProduct.data.params*/
+      for (let paramId in thisProduct.data.params) {
+        console.log(paramId);
+        /* save the element in thisProduct.data.params with key paramId as const param */
+        const param = thisProduct.data.params[paramId];
+        console.log (param);
+
+        /* START LOOP: for each optionId in param.options */
+        for (let optionId in param.options) {
+          console.log(optionId);
+          /* save the element in param.options with key optionId as const option */
+          const option = param.options[optionId];
+
+          /* find selected options */
+
+          const optionSelected =
+            formData.hasOwnProperty(paramId) &&
+            formData[paramId].indexOf(optionId) > -1;
+          console.log(optionSelected);
+
+          /* START IF: if option is selected and option is not default */
+          if (optionSelected && !option.default) {
+            /* add price of option to variable price */
+            price += option.price;
+
+            /* END IF: if option is selected and option is not default */
+            /* START ELSE IF: if option is not selected and option is default */
+          } else if (!optionSelected && option.default) {
+            /* deduct price of option from price */
+            price -= option.price;
+
+            /* END ELSE IF: if option is not selected and option is default */
+          }
+          /* END LOOP: for each optionId in param.options */
+        }
+        /* END LOOP: for each paramId in thisProduct.data.params */
+      }
+
+      /* insert price into thisProduct.priceElem */
+      thisProduct.priceElem.innerHTML = price;
     }
   }
+
 
   const app = {
     initMenu: function () {
