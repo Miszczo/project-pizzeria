@@ -92,6 +92,9 @@
       thisProduct.accordionTrigger = thisProduct.element.querySelector(
         select.menuProduct.clickable
       );
+      thisProduct.imageWrapper = thisProduct.element.querySelector(
+        select.menuProduct.imageWrapper
+      );
       thisProduct.form = thisProduct.element.querySelector(
         select.menuProduct.form
       );
@@ -199,9 +202,27 @@
           } else if (!optionSelected && option.default) {
             /* deduct price of option from price */
             price -= option.price;
-
             /* END ELSE IF: if option is not selected and option is default */
           }
+          /* find all elements */
+          const foundImages = thisProduct.imageWrapper.querySelectorAll('.' + paramId + '-' + optionId);
+          console.log(foundImages);
+          /* IF option check - all images get class from classNames.menuProduct.imageVisible*/
+          if (optionSelected) {
+            for(let foundImage of foundImages) {
+              foundImage.classList.add('active');
+              console.log(foundImage);
+            }
+            /* ELSE all images for this option should lost class from classNames.menuProduct.imageVisible */
+          } else {
+            for (let foundImage of foundImages){
+              foundImage.classList.remove('active');
+              console.log(foundImage);
+            }
+          }
+
+
+
           /* END LOOP: for each optionId in param.options */
         }
         /* END LOOP: for each paramId in thisProduct.data.params */
