@@ -223,9 +223,6 @@
               console.log(foundImage);
             }
           }
-
-
-
           /* END LOOP: for each optionId in param.options */
         }
         /* END LOOP: for each paramId in thisProduct.data.params */
@@ -252,6 +249,7 @@
       const thisWidget = this;
 
       thisWidget.getElements(element);
+      thisWidget.value = settings.amountWidget.defaultValue;
       thisWidget.setValue(thisWidget.input.value);
       thisWidget.initActions();
 
@@ -266,15 +264,20 @@
       thisWidget.linkDecrease = thisWidget.element.querySelector(select.widgets.amount.linkDecrease);
       thisWidget.linkIncrease = thisWidget.element.querySelector(select.widgets.amount.linkIncrease);
     }
+
     setValue(value){
       const thisWidget = this;
 
       const newValue = parseInt(value);
 
-      /* TODO: add validation */
 
-      thisWidget.value = newValue;
-      thisWidget.announce();
+      /* wrap this two lines on bottom in if function */
+      if (newValue != value && newValue >= settings.amountWidget.defaultMin && newValue <= settings.amountWidget.defaultMax ) {
+        thisWidget.value = newValue;
+        thisWidget.announce();
+      }
+
+
 
       thisWidget.input.value = thisWidget.value;
 
@@ -295,6 +298,7 @@
         thisWidget.setValue(thisWidget.value + 1);
       });
     }
+
     announce(){
       const thisWidget = this;
 
