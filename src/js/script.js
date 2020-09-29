@@ -230,14 +230,19 @@
         }
         /* END LOOP: for each paramId in thisProduct.data.params */
       }
-
+      /* multiply price by amount */
+      price *= thisProduct.amountWidget.value;
       /* insert price into thisProduct.priceElem */
+
       thisProduct.priceElem.innerHTML = price;
     }
 
     initAmountWidget(){
       const thisProduct = this;
 
+      thisProduct.amountWidgetElem.addEventListener('updated', function(){
+        thisProduct.processOrder();
+      });
       thisProduct.amountWidget = new AmountWidget(thisProduct.amountWidgetElem);
     }
   }
@@ -269,6 +274,8 @@
       /* TODO: add validation */
 
       thisWidget.value = newValue;
+      thisWidget.announce();
+
       thisWidget.input.value = thisWidget.value;
 
 
@@ -288,10 +295,14 @@
         thisWidget.setValue(thisWidget.value + 1);
       });
     }
+    announce(){
+      const thisWidget = this;
+
+      const event = new Event('updated');
+      thisWidget.element.dispatchEvent(event);
+    }
 
   }
-
-
 
   const app = {
     initMenu: function () {
