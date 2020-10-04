@@ -393,6 +393,15 @@
       thisCart.dom.productList.appendChild(generatedDOM);
       console.log('adding product', menuProduct);
 
+      thisCart.products.push(menuProduct);
+      console.log('thisCart.products', thisCart.products);
+    }
+  }
+  class CartProduct {
+    constructor(menuProduct, element){
+      thisCartProduct = this;
+
+      thisCartProduct.menuProduct =
     }
   }
   const app = {
