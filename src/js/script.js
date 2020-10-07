@@ -199,7 +199,7 @@
 
     processOrder() {
       const thisProduct = this;
-      console.log('processOrder');
+      // console.log('processOrder');
 
       const formData = utils.serializeFormToObject(thisProduct.form);
       // console.log('formData', formData);
@@ -397,14 +397,17 @@
 
       thisCart.dom.toggleTrigger.addEventListener('click', function() {
         thisCart.dom.wrapper.classList.toggle('active');
-
-        thisCart.dom.productList.addEventListener('remove', function(event) {
-          thisCart.remove(event.detail.cartProduct);
-        });
-
       });
-    }
 
+      thisCart.dom.productList.addEventListener('updated', function() {
+        thisCart.update();
+      });
+
+      thisCart.dom.productList.addEventListener('remove', function(event) {
+        thisCart.remove(event.detail.cartProduct);
+      });
+
+    }
     add(menuProduct){
       const thisCart = this;
       const generatedHTML = templates.cartProduct(menuProduct);
@@ -422,7 +425,6 @@
       // console.log('thisCart.products', thisCart.products);
       thisCart.update();
     }
-
     update(){
       const thisCart = this;
 
@@ -447,19 +449,6 @@
         }
       }
     }
-
-    remove(cartProduct){
-      const thisCart = this;
-
-      const index = thisCart.products.indexOf('cartProduct');
-      console.log(index);
-
-      thisCart.products.splice(index);
-
-      cartProduct.dom.wrapper.remove();
-
-      thisCart.update();
-    }
   }
   class CartProduct {
     constructor(menuProduct, element){
@@ -475,8 +464,6 @@
 
       thisCartProduct.getElements(element);
       thisCartProduct.initAmountWidget();
-      thisCartProduct.remove();
-      thisCartProduct.initActions();
 
       // console.log('new CartProduct', thisCartProduct);
       // console.log('productData', menuProduct);
@@ -504,9 +491,8 @@
         thisCartProduct.dom.price.innerHTML = thisCartProduct.price;
       });
     }
-    remove(){
+    remove() {
       const thisCartProduct = this;
-
 
       const event = new CustomEvent('remove', {
         bubbles: true,
@@ -516,23 +502,22 @@
       });
 
       thisCartProduct.dom.wrapper.dispatchEvent(event);
-
-      console.log(event);
-      console.log(thisCartProduct.remove);
     }
 
-    initActions(){
+    initActions() {
       const thisCartProduct = this;
 
-      thisCartProduct.dom.edit.addEventListener('click', function(){
-        event.preventDefault();
-
-      });
-
-      thisCartProduct.dom.remove.addEventListener('click', function(){
+      thisCartProduct.dom.edit.addEventListener('click', function() {
         event.preventDefault();
       });
+
+      thisCartProduct.dom.remove.addEventListener('click', function() {
+        event.preventDefault();
+        thisCartProduct.remove();
+      });
+
     }
+
   }
   // console.log(CartProduct);
   const app = {
