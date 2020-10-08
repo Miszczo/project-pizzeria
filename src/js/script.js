@@ -390,6 +390,9 @@
       thisCart.dom.productList = document.querySelector(select.cart.productList);
       thisCart.dom.form = document.querySelector(select.cart.form);
 
+      thisCart.dom.inputPhone = thisCart.dom.wrapper.querySelector(select.cart.phone);
+      thisCart.dom.inputAddress = thisCart.dom.wrapper.querySelector(select.cart.address);
+
       thisCart.renderTotalsKeys = ['totalNumber', 'totalPrice', 'subtotalPrice', 'deliveryFee'];
 
       for(let key of thisCart.renderTotalsKeys){
@@ -473,11 +476,22 @@
     sendOrder(){
       const thisCart = this;
       const url = settings.db.url + '/' + settings.db.order;
-      
+
       const payload = {
-        address: 'test',
+        products: [],
+        totalNumber: thisCart.totalNumber,
+        deliveryFee: thisCart.deliveryFee,
+        subtotalPrice: thisCart.subtotalPrice,
         totalPrice: thisCart.totalPrice,
+        phone: thisCart.dom.inputPhone.value,
+        address: thisCart.dom.inputAddress.value,
       };
+      for(let thisCartProduct of thisCart.products){
+        const productData = thisCartProduct.getData();
+
+        payload.products.push(productData);
+      }
+
       const options = {
         method: 'POST',
         headers: {
@@ -560,7 +574,18 @@
         event.preventDefault();
         thisCartProduct.remove();
       });
+    }
 
+    getData() {
+      const thisCartProduct = this;
+      const productData = {
+        id: thisCartProduct.id,
+        amount: thisCartProduct.amount,
+        price: thisCartProduct.price,
+        priceSingle: thisCartProduct.priceSingle,
+        params: thisCartProduct.params,
+      };
+      return productData;
     }
 
   }
