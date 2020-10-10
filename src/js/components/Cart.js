@@ -1,4 +1,4 @@
-import {settings, select, templates} from '../settings.js';
+import {select, settings, templates} from '../settings.js';
 import {utils} from '../utils.js';
 import {CartProduct} from './CartProduct.js';
 
