@@ -1,6 +1,7 @@
 import {Product} from'./compontents/Product.js';
 import {Cart} from './components/Cart.js';
-import {select, settings} from './settings.js';
+import {select, settings, classNames, templates} from './settings.js';
+
 
 // console.log(CartProduct);
 const app = {
