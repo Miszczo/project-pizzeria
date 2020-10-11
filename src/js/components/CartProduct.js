@@ -51,7 +51,7 @@ export class CartProduct {
       bubbles: true,
       detail: {
         cartProduct: thisCartProduct,
-      }
+      },
     });
 
     thisCartProduct.dom.wrapper.dispatchEvent(event);
