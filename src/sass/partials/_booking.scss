@@ -83,7 +83,7 @@
   }
 
   &__fill {
-    
+
     transition-timing-function: cubic-bezier(0, 1, 0, 1);
     transition: width 100ms;
     box-shadow: none;
@@ -160,6 +160,7 @@
     &.booked {
       cursor: not-allowed;
       color: lighten($color-dark, 40%);
+      pointer-events: none;
 
       &::after {
         position: absolute;
